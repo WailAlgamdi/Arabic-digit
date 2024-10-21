@@ -8,8 +8,18 @@ function App() {
 
   const handleOpenCamera = async () => {
     try {
+      // Check if there are any video devices available
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const backCamera = devices.find(device => device.kind === 'videoinput' && device.label.toLowerCase().includes('environment'));
+
+      if (!backCamera) {
+        console.error('Back camera not found.');
+        return; // If no back camera is found, do not proceed
+      }
+
+      // Access the back camera
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { exact: "environment" } } // Use the back camera
+        video: { deviceId: { exact: backCamera.deviceId } } // Use the back camera
       });
       setCameraStream(stream);
       // Show video stream (optional)
