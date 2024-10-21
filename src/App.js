@@ -4,15 +4,14 @@ import './App.css'; // Import the CSS file
 
 function App() {
   const [cameraStream, setCameraStream] = useState(null);
-  const [textToCopy, setTextToCopy] = useState("هنا الارقام العربية");
+  const [textToCopy, setTextToCopy] = useState("هنا انسخ الارقام ");
   const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [capturedImage, setCapturedImage] = useState(null);
 
   const handleOpenCamera = async () => {
     try {
-      // Check if there are any video devices available
       const devices = await navigator.mediaDevices.enumerateDevices();
-      console.log("Available devices: ", devices); // Debugging line
-      const backCamera = devices.find(device => 
+      const backCamera = devices.find(device =>
         device.kind === 'videoinput' && device.label.toLowerCase().includes('environment')
       );
 
@@ -21,33 +20,56 @@ function App() {
         return;
       }
 
-      // Access the back camera
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { deviceId: { exact: backCamera.deviceId } }
       });
       setCameraStream(stream);
       setIsCameraOpen(true);
 
-      // Show video stream
       const videoElement = document.getElementById("videoElement");
       videoElement.srcObject = stream;
 
-      // Ensure the video plays
       videoElement.onloadedmetadata = () => {
         videoElement.play();
       };
     } catch (err) {
       console.error("Error accessing the camera: ", err);
-      alert("Failed to access camera: " + err.message); // Alert to notify user
+      alert("Failed to access camera: " + err.message);
+    }
+  };
+
+  const handleCaptureImage = () => {
+    const videoElement = document.getElementById("videoElement");
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    // Set canvas size to match the video dimensions
+    canvas.width = videoElement.videoWidth;
+    canvas.height = videoElement.videoHeight;
+
+    // Draw the video frame to the canvas
+    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+    // Convert canvas to data URL
+    const imageData = canvas.toDataURL('image/png');
+    setCapturedImage(imageData);
+
+    // Optionally, stop the camera stream
+    stopCamera();
+  };
+
+  const stopCamera = () => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      setCameraStream(null);
+      setIsCameraOpen(false);
     }
   };
 
   // Cleanup function to stop the camera stream
   useEffect(() => {
     return () => {
-      if (cameraStream) {
-        cameraStream.getTracks().forEach(track => track.stop());
-      }
+      stopCamera();
     };
   }, [cameraStream]);
 
@@ -65,8 +87,23 @@ function App() {
         id="videoElement" 
         className="video" 
         autoPlay 
-        controls // Add controls for debugging
+        controls 
       />
+
+      {/* Button to capture image */}
+      {isCameraOpen && (
+        <button className="button" onClick={handleCaptureImage}>
+          Capture Image
+        </button>
+      )}
+
+      {/* Display captured image */}
+      {capturedImage && (
+        <div>
+          <h2>Captured Image</h2>
+          <img src={capturedImage} alt="Captured" className="captured-image" />
+        </div>
+      )}
 
       {/* Text tab with a copy feature */}
       <div className="copy-container">
