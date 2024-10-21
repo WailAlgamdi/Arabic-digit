@@ -4,37 +4,41 @@ import './App.css'; // Import the CSS file
 
 function App() {
   const [cameraStream, setCameraStream] = useState(null);
-  const [textToCopy, setTextToCopy] = useState("انسخ الارقام ");
-  const [isCameraOpen, setIsCameraOpen] = useState(false); // New state to track camera status
+  const [textToCopy, setTextToCopy] = useState("هنا الارقام العربية");
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
 
   const handleOpenCamera = async () => {
     try {
       // Check if there are any video devices available
       const devices = await navigator.mediaDevices.enumerateDevices();
-      const backCamera = devices.find(device => device.kind === 'videoinput' && device.label.toLowerCase().includes('environment'));
+      console.log("Available devices: ", devices); // Debugging line
+      const backCamera = devices.find(device => 
+        device.kind === 'videoinput' && device.label.toLowerCase().includes('environment')
+      );
 
       if (!backCamera) {
         console.error('Back camera not found.');
-        return; // If no back camera is found, do not proceed
+        return;
       }
 
       // Access the back camera
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { deviceId: { exact: backCamera.deviceId } } // Use the back camera
+        video: { deviceId: { exact: backCamera.deviceId } }
       });
       setCameraStream(stream);
-      setIsCameraOpen(true); // Set camera status to open
+      setIsCameraOpen(true);
 
-      // Show video stream (optional)
+      // Show video stream
       const videoElement = document.getElementById("videoElement");
       videoElement.srcObject = stream;
 
-      // Handle cleanup
+      // Ensure the video plays
       videoElement.onloadedmetadata = () => {
         videoElement.play();
       };
     } catch (err) {
       console.error("Error accessing the camera: ", err);
+      alert("Failed to access camera: " + err.message); // Alert to notify user
     }
   };
 
@@ -56,8 +60,13 @@ function App() {
         Access Camera
       </button>
 
-      {/* Video feed (optional, if you want to display the camera feed) */}
-      <video id="videoElement" className="video" autoPlay />
+      {/* Video feed */}
+      <video 
+        id="videoElement" 
+        className="video" 
+        autoPlay 
+        controls // Add controls for debugging
+      />
 
       {/* Text tab with a copy feature */}
       <div className="copy-container">
