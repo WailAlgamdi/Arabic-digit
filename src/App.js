@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import './App.css'; // Import the CSS file
 
 function App() {
   const [cameraStream, setCameraStream] = useState(null);
-  const [textToCopy, setTextToCopy] = useState("هنا الارقام العربية");
+  const [textToCopy, setTextToCopy] = useState("انسخ الارقام ");
+  const [isCameraOpen, setIsCameraOpen] = useState(false); // New state to track camera status
 
   const handleOpenCamera = async () => {
     try {
@@ -22,20 +23,36 @@ function App() {
         video: { deviceId: { exact: backCamera.deviceId } } // Use the back camera
       });
       setCameraStream(stream);
+      setIsCameraOpen(true); // Set camera status to open
+
       // Show video stream (optional)
       const videoElement = document.getElementById("videoElement");
       videoElement.srcObject = stream;
+
+      // Handle cleanup
+      videoElement.onloadedmetadata = () => {
+        videoElement.play();
+      };
     } catch (err) {
       console.error("Error accessing the camera: ", err);
     }
   };
+
+  // Cleanup function to stop the camera stream
+  useEffect(() => {
+    return () => {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [cameraStream]);
 
   return (
     <div className="container">
       <h1>التعرف على الارقام العربية</h1>
 
       {/* Button to access camera */}
-      <button className="button" onClick={handleOpenCamera}>
+      <button className="button" onClick={handleOpenCamera} disabled={isCameraOpen}>
         Access Camera
       </button>
 
