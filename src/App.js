@@ -4,7 +4,7 @@ import './App.css'; // Import the CSS file
 
 function App() {
   const [cameraStream, setCameraStream] = useState(null);
-  const [textToCopy, setTextToCopy] = useState("Here is a string to copy!");
+  const [textToCopy, setTextToCopy] = useState("هنا الارقام العربية");
 
   const handleOpenCamera = async () => {
     try {
@@ -44,7 +44,7 @@ function App() {
 
       {/* Text tab with a copy feature */}
       <div className="copy-container">
-        <p>{نسخ}</p>
+        <p>{textToCopy}</p>
         <CopyToClipboard text={textToCopy}>
           <button className="copy-button">Copy Text</button>
         </CopyToClipboard>
