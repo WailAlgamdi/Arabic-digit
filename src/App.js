@@ -32,7 +32,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Phone Camera and Copy Text App</h1>
+      <h1>التعرف على الارقام العربية</h1>
 
       {/* Button to access camera */}
       <button className="button" onClick={handleOpenCamera}>
@@ -44,7 +44,7 @@ function App() {
 
       {/* Text tab with a copy feature */}
       <div className="copy-container">
-        <p>{textToCopy}</p>
+        <p>{نسخ}</p>
         <CopyToClipboard text={textToCopy}>
           <button className="copy-button">Copy Text</button>
         </CopyToClipboard>
