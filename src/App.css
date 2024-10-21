@@ -1,13 +1,39 @@
-h1{
-  background-color: greenyellow;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 18px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.copy-container {
+  margin-top: 20px;
   text-align: center;
 }
 
-h2{
-  text-align: center;
-
+.copy-button {
+  padding: 8px 15px;
+  background-color: #008CBA;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.header{
-  font-size: 380%;
+.video {
+  width: 300px;
+  height: 300px;
+  margin-top: 20px;
+  border: 2px solid #ccc;
 }
