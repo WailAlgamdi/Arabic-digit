@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Arabic-digit/static/css/main.e6c13ad2.css",
-    "main.js": "/Arabic-digit/static/js/main.ed0bbefb.js",
+    "main.js": "/Arabic-digit/static/js/main.528f9785.js",
     "static/js/453.a5363aef.chunk.js": "/Arabic-digit/static/js/453.a5363aef.chunk.js",
     "index.html": "/Arabic-digit/index.html",
     "main.e6c13ad2.css.map": "/Arabic-digit/static/css/main.e6c13ad2.css.map",
-    "main.ed0bbefb.js.map": "/Arabic-digit/static/js/main.ed0bbefb.js.map",
+    "main.528f9785.js.map": "/Arabic-digit/static/js/main.528f9785.js.map",
     "453.a5363aef.chunk.js.map": "/Arabic-digit/static/js/453.a5363aef.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.ed0bbefb.js"
+    "static/js/main.528f9785.js"
   ]
 }
